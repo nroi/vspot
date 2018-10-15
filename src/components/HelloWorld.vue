@@ -2,7 +2,7 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>
-      HERE: {{ $store.getters.formatElapsed}} / {{ $store.getters.formatDuration }}
+      HERE: {{ $store.getters.formatElapsed }} / {{ $store.getters.formatDuration }}
     </p>
     <button @click="clickButton"></button>
     <p>

@@ -12,6 +12,7 @@ const store: StoreOptions<RootState> = {
             message: '',
             reconnectError: false,
         },
+        now: Date.now(),
     },
     mutations: {
         SOCKET_ONOPEN(state, event) {
@@ -40,6 +41,7 @@ const store: StoreOptions<RootState> = {
                 console.log(JSON.stringify(message));
                 // state.currentSong = playerMessage.payload.song;
                 Vue.set(state, 'currentSong', playerMessage.payload.song);
+                playerMessage.payload.status.timestamp = Date.now();
                 Vue.set(state, 'currentStatus', playerMessage.payload.status);
                 console.log('Set song and status');
                 // console.log(title);
@@ -52,6 +54,10 @@ const store: StoreOptions<RootState> = {
         },
         SOCKET_RECONNECT_ERROR(state) {
             state.socket.reconnectError = true;
+        },
+        updateNow(state) {
+            console.log('update now');
+            state.now = Date.now();
         },
     },
     actions: {
@@ -74,7 +80,10 @@ const store: StoreOptions<RootState> = {
         formatElapsed(state) {
             // TODO: get the actual time from the backend and format it accordingly.
             if (state.currentStatus) {
-                return formatHHMMSS(state.currentStatus.elapsed);
+                const elapsedThen: number = state.currentStatus.elapsed;
+                const elapsedDiff = Math.max(0, Math.trunc((state.now - state.currentStatus.timestamp) / 1000));
+                const elapsedNow = elapsedThen + elapsedDiff;
+                return formatHHMMSS(Math.trunc(elapsedNow));
             } else {
                 console.log('current song is NOT set.');
                 return '00:00';
