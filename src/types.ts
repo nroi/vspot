@@ -4,6 +4,7 @@ export interface RootState {
         message: string,
         reconnectError: boolean,
     };
+    currentSong?: PlayerSong;
 }
 
 
