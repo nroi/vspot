@@ -2,6 +2,8 @@ import Vue from 'vue';
 import App from './App.vue';
 import store from './store';
 import VueNativeSock from 'vue-native-websocket';
+import Vuetify from 'vuetify';
+import 'vuetify/dist/vuetify.min.css';
 
 Vue.config.productionTip = false;
 
@@ -13,6 +15,8 @@ const opts = {
     store,
 };
 Vue.use(VueNativeSock, 'ws://localhost:4000/socket/websocket', opts);
+
+Vue.use(Vuetify);
 
 new Vue({
   store,

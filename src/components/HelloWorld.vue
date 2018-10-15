@@ -1,5 +1,8 @@
 <template>
   <div class="hello">
+    <v-slider
+            v-model="slider"
+    ></v-slider>
     <h1>{{ msg }}</h1>
     <p>
       HERE: {{ $store.getters.formatElapsed }} / {{ $store.getters.formatDuration }}
@@ -45,6 +48,9 @@ export default class HelloWorld extends Vue {
   private clickButton(): void {
       console.log('foo');
   }
+
+  slider: number = 45;
+
 }
 
 </script>
