@@ -1,12 +1,11 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
-import { RootState } from './types';
+import {PhxMessage, PlayerMessage, RootState} from './types';
 
 Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {
     state: {
-        player_status: 'unknown',
         socket: {
             isConnected: false,
             message: '',
@@ -33,13 +32,14 @@ const store: StoreOptions<RootState> = {
             console.error(state, event);
         },
         // default handler called for all methods
-        SOCKET_ONMESSAGE(state, message)  {
+        SOCKET_ONMESSAGE(state, message: PhxMessage)  {
             console.log('Got message from topic ' + message.topic);
             if (message.topic === 'player' && message.event === 'changed') {
+                const playerMessage = message as PlayerMessage;
                 console.log(JSON.stringify(message));
-                const title = message.payload.song.title;
-                console.log(title);
-                state.socket.message = message;
+                const title = playerMessage.payload.song.title;
+                // console.log(title);
+                // state.socket.message = message;
             }
         },
         // mutations for reconnect methods
