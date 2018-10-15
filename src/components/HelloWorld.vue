@@ -2,7 +2,7 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>
-      HERE: {{ $store.getters.formatDuration }}
+      HERE: {{ $store.getters.formatElapsed}} / {{ $store.getters.formatDuration }}
     </p>
     <button @click="clickButton"></button>
     <p>
@@ -42,7 +42,7 @@ export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
 
   // Component methods can be declared as instance methods
-  clickButton(): void {
+  private clickButton(): void {
       console.log('foo');
   }
 }

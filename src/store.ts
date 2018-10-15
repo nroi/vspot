@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 import {PhxMessage, PlayerMessage, RootState} from './types';
+import { formatHHMMSS } from './shared';
 
 Vue.use(Vuex);
 
@@ -39,7 +40,8 @@ const store: StoreOptions<RootState> = {
                 console.log(JSON.stringify(message));
                 // state.currentSong = playerMessage.payload.song;
                 Vue.set(state, 'currentSong', playerMessage.payload.song);
-                console.log('Set song.');
+                Vue.set(state, 'currentStatus', playerMessage.payload.status);
+                console.log('Set song and status');
                 // console.log(title);
                 // state.socket.message = message;
             }
@@ -63,25 +65,21 @@ const store: StoreOptions<RootState> = {
         formatDuration(state) {
             // TODO: get the actual time from the backend and format it accordingly.
             if (state.currentSong) {
-                console.log('current song is SET.');
-                const totalSeconds = state.currentSong.duration_in_secs;
-                const totalHours = Math.trunc(totalSeconds / 3600);
-                const restMinutes = Math.trunc((totalSeconds - totalHours * 3600) / 60);
-                const restSeconds = totalSeconds - totalHours * 3600 - restMinutes * 60;
-
-                const prefix = (duration: number) => duration < 10 ? '0' : '';
-
-                const hoursString = totalHours > 0 ? `${prefix(totalHours)}${String(totalHours)}:` : '';
-                const minutesString = `${prefix(restMinutes)}${String(restMinutes)}:`;
-                const secondsString = `${prefix(restSeconds)}${String(restSeconds)}`;
-
-                return hoursString + minutesString + secondsString;
+                return formatHHMMSS(state.currentSong.duration_in_secs);
             } else {
                 console.log('current song is NOT set.');
                 return '00:00';
             }
-        }
-        ,
+        },
+        formatElapsed(state) {
+            // TODO: get the actual time from the backend and format it accordingly.
+            if (state.currentStatus) {
+                return formatHHMMSS(state.currentStatus.elapsed);
+            } else {
+                console.log('current song is NOT set.');
+                return '00:00';
+            }
+        },
     },
 };
 
