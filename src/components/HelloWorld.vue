@@ -1,13 +1,13 @@
 <template>
   <div class="hello">
     <v-slider
-            v-model="slider"
+            :max="$store.state.duration"
+            v-model="$store.getters.elapsedTime"
     ></v-slider>
     <h1>{{ msg }}</h1>
     <p>
       HERE: {{ $store.getters.formatElapsed }} / {{ $store.getters.formatDuration }}
     </p>
-    <button @click="clickButton"></button>
     <p>
       For guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -44,12 +44,11 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
 
-  // Component methods can be declared as instance methods
-  private clickButton(): void {
-      console.log('foo');
+  created() {
+      console.log('created.');
+      const song = this.$store.state.currentSong;
+      console.log("current song: " + JSON.stringify(song));
   }
-
-  slider: number = 45;
 
 }
 

@@ -7,6 +7,7 @@ Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {
     state: {
+        duration: 0,
         socket: {
             isConnected: false,
             message: '',
@@ -44,6 +45,9 @@ const store: StoreOptions<RootState> = {
                 playerMessage.payload.status.timestamp = Date.now();
                 Vue.set(state, 'currentStatus', playerMessage.payload.status);
                 console.log('Set song and status');
+
+                // TODO ugly workaround.
+                state.duration = playerMessage.payload.song.duration_in_secs;
                 // console.log(title);
                 // state.socket.message = message;
             }
@@ -77,6 +81,18 @@ const store: StoreOptions<RootState> = {
                 return '00:00';
             }
         },
+        elapsedTime(state) {
+            // TODO code duplication (formatElapsed).
+            // perhaps we can use a filter or some such.
+            if (state.currentStatus) {
+                const elapsedThen: number = state.currentStatus.elapsed;
+                const elapsedDiff = Math.max(0, Math.trunc((state.now - state.currentStatus.timestamp) / 1000));
+                const elapsedNow = elapsedThen + elapsedDiff;
+                return Math.trunc(elapsedNow);
+            } else {
+                return 0;
+            }
+        },
         formatElapsed(state) {
             // TODO: get the actual time from the backend and format it accordingly.
             if (state.currentStatus) {
@@ -85,7 +101,6 @@ const store: StoreOptions<RootState> = {
                 const elapsedNow = elapsedThen + elapsedDiff;
                 return formatHHMMSS(Math.trunc(elapsedNow));
             } else {
-                console.log('current song is NOT set.');
                 return '00:00';
             }
         },

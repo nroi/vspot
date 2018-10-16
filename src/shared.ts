@@ -11,3 +11,4 @@ export function formatHHMMSS(totalSeconds: number) {
 
     return hoursString + minutesString + secondsString;
 }
+
