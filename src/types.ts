@@ -1,5 +1,4 @@
 export interface RootState {
-    duration: number;
     socket: {
         isConnected: boolean,
         message: string,

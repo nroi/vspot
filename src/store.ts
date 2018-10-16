@@ -7,7 +7,6 @@ Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {
     state: {
-        duration: 0,
         socket: {
             isConnected: false,
             message: '',
@@ -45,9 +44,6 @@ const store: StoreOptions<RootState> = {
                 playerMessage.payload.status.timestamp = Date.now();
                 Vue.set(state, 'currentStatus', playerMessage.payload.status);
                 console.log('Set song and status');
-
-                // TODO ugly workaround.
-                state.duration = playerMessage.payload.song.duration_in_secs;
                 // console.log(title);
                 // state.socket.message = message;
             }

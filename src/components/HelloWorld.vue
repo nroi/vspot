@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <v-slider
-            :max="$store.state.duration"
+            :max="$store.state.currentSong ? $store.state.currentSong.duration_in_secs : 0"
             v-model="$store.getters.elapsedTime"
     ></v-slider>
     <h1>{{ msg }}</h1>
