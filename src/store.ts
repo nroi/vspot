@@ -21,13 +21,20 @@ const store: StoreOptions<RootState> = {
             Vue.prototype.$socket = event.currentTarget;
             state.socket.isConnected = true;
             console.log('Websocket is connected.');
-            const msg1 = {
+            const phxJoinPlayerMsg = {
                 topic: 'player',
                 event: 'phx_join',
                 payload: {},
                 ref: '1',
             };
-            Vue.prototype.$socket.sendObj(msg1);
+            const phxJoinPlaylistMsg = {
+                topic: 'playlist',
+                event: 'phx_join',
+                payload: {},
+                ref: '1',
+            };
+            Vue.prototype.$socket.sendObj(phxJoinPlayerMsg);
+            Vue.prototype.$socket.sendObj(phxJoinPlaylistMsg);
         },
         SOCKET_ONCLOSE(state, event) {
             state.socket.isConnected = false;
@@ -39,16 +46,19 @@ const store: StoreOptions<RootState> = {
         SOCKET_ONMESSAGE(state, message: PhxMessage)  {
             console.log('Got message from topic ' + message.topic);
             if (message.topic === 'player' && message.event === 'changed') {
-                const playerMessage = message as PlayerMessage;
+                const playerMessage = message.payload as PlayerMessage;
                 console.log(JSON.stringify(message));
-                Vue.set(state, 'currentSong', playerMessage.payload.song);
-                playerMessage.payload.status.timestamp = Date.now();
-                Vue.set(state, 'currentStatus', playerMessage.payload.status);
+                Vue.set(state, 'currentSong', playerMessage.song);
+                playerMessage.status.timestamp = Date.now();
+                Vue.set(state, 'currentStatus', playerMessage.status);
                 // Vue.set(state.ui, 'elapsedTime', playerMessage.payload.status.elapsed);
-                state.ui.elapsedTime = playerMessage.payload.status.elapsed;
+                state.ui.elapsedTime = playerMessage.status.elapsed;
                 console.log('Set song and status');
                 // console.log(title);
                 // state.socket.message = message;
+            } else if (message.topic === 'playlist' && message.event === 'changed') {
+                console.log('got playlist');
+                console.log(message.payload);
             }
         },
         // mutations for reconnect methods

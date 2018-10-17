@@ -50,6 +50,7 @@ interface PlayerSong {
 }
 
 
+
 export interface PhxReply {
     topic: 'player' | 'playlist' | 'database' | 'mixer' | 'misc' | 'search';
     ref: string;
@@ -63,15 +64,16 @@ export interface PhxMessage {
     topic: 'player' | 'playlist' | 'database' | 'mixer' | 'misc' | 'search';
     ref: string;
     event: any;
-    payload: {};
+    payload: PlaylistMessage | PlayerMessage;
+}
+
+interface PlaylistMessage {
+    status: PlayerStatus;
+    songs: PlayerSong[];
+    current_id: number;
 }
 
 export interface PlayerMessage {
-    topic: 'player';
-    ref: string;
-    event: 'changed';
-    payload: {
-        status: PlayerStatus,
-        song: PlayerSong;
-    };
+    status: PlayerStatus;
+    song: PlayerSong;
 }
