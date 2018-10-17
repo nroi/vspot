@@ -2,6 +2,8 @@
   <div id="app">
     <v-app>
       <HelloWorld/>
+      <SongInfo v-if="$store.state.currentSong">
+      </SongInfo>
     </v-app>
   </div>
 </template>
@@ -9,12 +11,15 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from './components/HelloWorld.vue';
+import SongInfo from './components/SongInfo.vue';
 
 @Component({
   components: {
     HelloWorld,
+    SongInfo,
   },
 })
+
 export default class App extends Vue {
     private created() {
         setInterval(() => this.$store.commit('updateNow'), 1000);
