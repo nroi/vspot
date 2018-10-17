@@ -4,6 +4,7 @@ import store from './store';
 import VueNativeSock from 'vue-native-websocket';
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
 Vue.config.productionTip = false;
 
@@ -16,7 +17,9 @@ const opts = {
 };
 Vue.use(VueNativeSock, 'ws://localhost:4000/socket/websocket', opts);
 
-Vue.use(Vuetify);
+Vue.use(Vuetify, {
+    iconfont: 'mdi',
+});
 
 new Vue({
   store,

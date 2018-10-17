@@ -1,5 +1,14 @@
 <template>
   <div>
+    <v-btn @click="next()" fab title="previous">
+      <v-icon>skip_previous</v-icon>
+    </v-btn>
+    <v-btn @click="play()" fab large title="play">
+      <v-icon>play_circle_outline</v-icon>
+    </v-btn>
+    <v-btn @click="next()" fab title="next">
+      <v-icon>skip_next</v-icon>
+    </v-btn>
     {{ $store.state.currentSong.artist }} – {{ $store.state.currentSong.title }}
     {{ formatHHMMSS($store.getters.uiElapsedTime) }} / {{ formatHHMMSS($store.getters.currentSongDuration) }}
   </div>
@@ -10,7 +19,6 @@
 
     @Component
     export default class SongInfo extends Vue {
-        name: "SongInfo";
 
         private formatHHMMSS(totalSeconds: number) {
             totalSeconds = Math.trunc(totalSeconds);
