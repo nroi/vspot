@@ -1,6 +1,7 @@
 <template>
   <div>
-    HERE: {{ formatHHMMSS($store.getters.uiElapsedTime) }} / {{ formatHHMMSS($store.getters.currentSongDuration) }}
+    {{ $store.state.currentSong.artist }} – {{ $store.state.currentSong.title }}
+    {{ formatHHMMSS($store.getters.uiElapsedTime) }} / {{ formatHHMMSS($store.getters.currentSongDuration) }}
   </div>
 </template>
 
