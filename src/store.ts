@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 import {PhxMessage, PlayerMessage, RootState} from './types';
-import { formatHHMMSS } from './shared';
 
 Vue.use(Vuex);
 
@@ -13,6 +12,9 @@ const store: StoreOptions<RootState> = {
             reconnectError: false,
         },
         now: Date.now(),
+        ui: {
+            elapsedTime: 0,
+        },
     },
     mutations: {
         SOCKET_ONOPEN(state, event) {
@@ -39,10 +41,11 @@ const store: StoreOptions<RootState> = {
             if (message.topic === 'player' && message.event === 'changed') {
                 const playerMessage = message as PlayerMessage;
                 console.log(JSON.stringify(message));
-                // state.currentSong = playerMessage.payload.song;
                 Vue.set(state, 'currentSong', playerMessage.payload.song);
                 playerMessage.payload.status.timestamp = Date.now();
                 Vue.set(state, 'currentStatus', playerMessage.payload.status);
+                // Vue.set(state.ui, 'elapsedTime', playerMessage.payload.status.elapsed);
+                state.ui.elapsedTime = playerMessage.payload.status.elapsed;
                 console.log('Set song and status');
                 // console.log(title);
                 // state.socket.message = message;
@@ -58,6 +61,16 @@ const store: StoreOptions<RootState> = {
         updateNow(state) {
             console.log('update now');
             state.now = Date.now();
+
+            // TOOD code duplication: Refactor into a separate method?
+            if (state.currentStatus) {
+                const elapsedThen: number = state.currentStatus.elapsed;
+                const elapsedDiff = Math.max(0, Math.trunc((state.now - state.currentStatus.timestamp) / 1000));
+                const elapsedNow = elapsedThen + elapsedDiff;
+                state.ui.elapsedTime = Math.trunc(elapsedNow);
+            } else {
+                state.ui.elapsedTime = 0;
+            }
         },
     },
     actions: {
@@ -68,38 +81,41 @@ const store: StoreOptions<RootState> = {
         },
     },
     getters: {
-        formatDuration(state) {
+        currentSongDuration(state) {
             // TODO: get the actual time from the backend and format it accordingly.
             if (state.currentSong) {
-                return formatHHMMSS(state.currentSong.duration_in_secs);
+                return state.currentSong.duration_in_secs;
             } else {
                 console.log('current song is NOT set.');
-                return '00:00';
-            }
-        },
-        elapsedTime(state) {
-            // TODO code duplication (formatElapsed).
-            // perhaps we can use a filter or some such.
-            if (state.currentStatus) {
-                const elapsedThen: number = state.currentStatus.elapsed;
-                const elapsedDiff = Math.max(0, Math.trunc((state.now - state.currentStatus.timestamp) / 1000));
-                const elapsedNow = elapsedThen + elapsedDiff;
-                return Math.trunc(elapsedNow);
-            } else {
                 return 0;
             }
         },
-        formatElapsed(state) {
-            // TODO: get the actual time from the backend and format it accordingly.
-            if (state.currentStatus) {
-                const elapsedThen: number = state.currentStatus.elapsed;
-                const elapsedDiff = Math.max(0, Math.trunc((state.now - state.currentStatus.timestamp) / 1000));
-                const elapsedNow = elapsedThen + elapsedDiff;
-                return formatHHMMSS(Math.trunc(elapsedNow));
-            } else {
-                return '00:00';
-            }
+        uiElapsedTime(state) {
+            return state.ui.elapsedTime;
         },
+        // elapsedTime(state) {
+        // //     // TODO code duplication (formatElapsed).
+        // //     // perhaps we can use a filter or some such.
+        //     if (state.currentStatus) {
+        //         const elapsedThen: number = state.currentStatus.elapsed;
+        //         const elapsedDiff = Math.max(0, Math.trunc((state.now - state.currentStatus.timestamp) / 1000));
+        //         const elapsedNow = elapsedThen + elapsedDiff;
+        //         return Math.trunc(elapsedNow);
+        //     } else {
+        //         return 0;
+        //     }
+        // },
+        // formatElapsed(state) {
+        //     // TODO: get the actual time from the backend and format it accordingly.
+        //     if (state.currentStatus) {
+        //         const elapsedThen: number = state.currentStatus.elapsed;
+        //         const elapsedDiff = Math.max(0, Math.trunc((state.now - state.currentStatus.timestamp) / 1000));
+        //         const elapsedNow = elapsedThen + elapsedDiff;
+        //         return formatHHMMSS(elapsedNow);
+        //     } else {
+        //         return '00:00';
+        //     }
+        // },
     },
 };
 

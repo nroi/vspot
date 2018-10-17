@@ -7,6 +7,9 @@ export interface RootState {
     currentSong?: PlayerSong;
     currentStatus?: PlayerStatus;
     now: number;
+    ui: {
+        elapsedTime: number;
+    };
 }
 
 
