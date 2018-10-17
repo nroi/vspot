@@ -44,10 +44,10 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
 
-  created() {
+  private created() {
       console.log('created.');
       const song = this.$store.state.currentSong;
-      console.log("current song: " + JSON.stringify(song));
+      console.log('current song: ' + JSON.stringify(song));
   }
 
 }
