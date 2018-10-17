@@ -93,29 +93,6 @@ const store: StoreOptions<RootState> = {
         uiElapsedTime(state) {
             return state.ui.elapsedTime;
         },
-        // elapsedTime(state) {
-        // //     // TODO code duplication (formatElapsed).
-        // //     // perhaps we can use a filter or some such.
-        //     if (state.currentStatus) {
-        //         const elapsedThen: number = state.currentStatus.elapsed;
-        //         const elapsedDiff = Math.max(0, Math.trunc((state.now - state.currentStatus.timestamp) / 1000));
-        //         const elapsedNow = elapsedThen + elapsedDiff;
-        //         return Math.trunc(elapsedNow);
-        //     } else {
-        //         return 0;
-        //     }
-        // },
-        // formatElapsed(state) {
-        //     // TODO: get the actual time from the backend and format it accordingly.
-        //     if (state.currentStatus) {
-        //         const elapsedThen: number = state.currentStatus.elapsed;
-        //         const elapsedDiff = Math.max(0, Math.trunc((state.now - state.currentStatus.timestamp) / 1000));
-        //         const elapsedNow = elapsedThen + elapsedDiff;
-        //         return formatHHMMSS(elapsedNow);
-        //     } else {
-        //         return '00:00';
-        //     }
-        // },
     },
 };
 
