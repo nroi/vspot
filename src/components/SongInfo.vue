@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn @click="next()" fab title="previous">
+    <v-btn @click="previous()" fab title="previous">
       <v-icon>skip_previous</v-icon>
     </v-btn>
     <v-btn @click="play()" fab large title="play">
@@ -33,6 +33,14 @@
             const secondsString = `${prefix(restSeconds)}${String(restSeconds)}`;
 
             return hoursString + minutesString + secondsString;
+        }
+
+        private next() {
+            this.$store.dispatch('playNextSong');
+        }
+
+        private previous() {
+            this.$store.dispatch('playPreviousSong');
         }
     }
 </script>

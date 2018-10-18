@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 import {PhxMessage, PlayerMessage, PlaylistMessage, PlayerSong, RootState} from './types';
+import {randomString} from './shared';
 
 Vue.use(Vuex);
 
@@ -78,10 +79,28 @@ const store: StoreOptions<RootState> = {
         },
     },
     actions: {
-        sendMessage(context, message) {
-            // ...
-            Vue.prototype.$socket.send(message);
-            // ...
+        sendObject(context, object) {
+            Vue.prototype.$socket.sendObj(object);
+        },
+
+        playNextSong(context) {
+            const msg = {
+                topic: 'player',
+                event: 'play_next_song',
+                payload: {},
+                ref: randomString(),
+            };
+            Vue.prototype.$socket.sendObj(msg);
+        },
+
+        playPreviousSong(context) {
+            const msg = {
+                topic: 'player',
+                event: 'play_previous_song',
+                payload: {},
+                ref: randomString(),
+            };
+            Vue.prototype.$socket.sendObj(msg);
         },
     },
     getters: {
