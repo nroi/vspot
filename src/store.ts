@@ -1,15 +1,8 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
-import {PhxMessage, PlayerMessage, PlaylistMessage, PlayerStatus, PlayerSong, RootState} from './types';
+import {PhxMessage, PlayerMessage, PlaylistMessage, PlayerSong, RootState} from './types';
 
 Vue.use(Vuex);
-
-function elapsedFromStatus(playerStatus: PlayerStatus) {
-    const then = Math.trunc(playerStatus.timestamp / 1000);
-    const now = Date.now();
-    const diff = Date.now() * 1000 - playerStatus.timestamp;
-    return playerStatus.elapsed + diff / 1000000;
-}
 
 const store: StoreOptions<RootState> = {
     state: {
@@ -66,9 +59,6 @@ const store: StoreOptions<RootState> = {
                 console.log('got playlist');
                 console.log(message.payload);
                 const playlistMessage = message.payload as PlaylistMessage;
-                // state.ui.elapsedTime = playlistMessage.status.elapsed + elapsedSinceTimestamp;
-                Vue.set(state.ui, 'elapsedTime', elapsedFromStatus(playlistMessage.status));
-                state.currentStatus = playlistMessage.status;
                 Vue.set(state, 'currentStatus', playlistMessage.status);
                 const song = playlistMessage.songs.find((p: PlayerSong) => p.id === playlistMessage.current_id);
                 Vue.set(state, 'currentSong', song);
@@ -85,13 +75,6 @@ const store: StoreOptions<RootState> = {
         updateNow(state) {
             console.log('update now');
             state.now = Date.now();
-
-            // TOOD code duplication: Refactor into a separate method?
-            if (state.currentStatus) {
-                Vue.set(state.ui, 'elapsedTime', elapsedFromStatus(state.currentStatus));
-            } else {
-                Vue.set(state.ui, 'elapsedTime', 0);
-            }
         },
     },
     actions: {
@@ -112,7 +95,12 @@ const store: StoreOptions<RootState> = {
             }
         },
         uiElapsedTime(state) {
-            return state.ui.elapsedTime;
+            if (state.currentStatus) {
+                const diff = state.now * 1000 - state.currentStatus.timestamp;
+                return state.currentStatus.elapsed + diff / 1000000;
+            } else {
+                return 0;
+            }
         },
     },
 };

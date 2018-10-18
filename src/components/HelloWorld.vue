@@ -2,7 +2,7 @@
   <div>
     <v-slider
             :max="$store.state.currentSong ? $store.state.currentSong.duration_in_secs : 0"
-            :value="$store.state.ui.elapsedTime"
+            :value="$store.getters.uiElapsedTime"
             @end="sliderEnd()"
     ></v-slider>
   </div>
