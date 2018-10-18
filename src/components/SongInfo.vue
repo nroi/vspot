@@ -1,17 +1,19 @@
 <template>
   <div>
-    <v-btn @click="previous()" fab title="previous">
+    <v-btn @click="previous()" icon title="previous">
       <v-icon>skip_previous</v-icon>
     </v-btn>
-    <v-btn v-if="$store.state.currentStatus.state === 'play'" @click="pause()" fab large title="pause">
-      <v-icon>
-        pause_circle_outline</v-icon>
+    <v-btn v-if="$store.state.currentStatus.state === 'play'" @click="pause()" icon :icon="true" :flat="true" large title="pause">
+      <v-icon dark>
+        pause_circle_outline
+      </v-icon>
     </v-btn>
-    <v-btn v-else @click="play()" fab large title="play">
+    <v-btn v-else @click="play()" icon large title="play">
       <v-icon>
-        play_circle_outline</v-icon>
+        play_circle_outline
+      </v-icon>
     </v-btn>
-    <v-btn @click="next()" fab title="next">
+    <v-btn @click="next()" icon title="next">
       <v-icon>skip_next</v-icon>
     </v-btn>
     {{ $store.state.currentSong.artist }} – {{ $store.state.currentSong.title }}
