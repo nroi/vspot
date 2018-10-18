@@ -2,7 +2,8 @@
   <div>
     <v-slider
             :max="$store.state.currentSong ? $store.state.currentSong.duration_in_secs : 0"
-            v-model="$store.state.ui.elapsedTime"
+            :value="$store.state.ui.elapsedTime"
+            @end="sliderEnd()"
     ></v-slider>
   </div>
 </template>
@@ -17,6 +18,10 @@ export default class HelloWorld extends Vue {
       console.log('created.');
       const song = this.$store.state.currentSong;
       console.log('current song:' + JSON.stringify(song));
+  }
+
+  private sliderEnd() {
+      console.log('sliderEnd()');
   }
 }
 

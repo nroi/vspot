@@ -22,7 +22,7 @@ import SongInfo from './components/SongInfo.vue';
 
 export default class App extends Vue {
     private created() {
-        setInterval(() => this.$store.commit('updateNow'), 1000);
+        setInterval(() => this.$store.commit('updateNow'), 50);
     }
 }
 </script>
