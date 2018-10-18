@@ -18,7 +18,7 @@ export interface PlayerStatus {
     updating_db: any;
     timestamp: number;
     time: string;
-    state: string;
+    state: 'play' | 'pause' | 'stop';
     song_pos: number;
     song_id: number;
     single: boolean;
@@ -46,15 +46,6 @@ export interface PlayerSong {
     duration: string;
     artist: string;
     album: string;
-}
-
-export interface PhxReply {
-    topic: 'player' | 'playlist' | 'database' | 'mixer' | 'misc' | 'search';
-    ref: string;
-    event: 'phx_reply';
-    payload: {
-        status: 'ok',
-    };
 }
 
 export interface PhxMessage {

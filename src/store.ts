@@ -93,6 +93,26 @@ const store: StoreOptions<RootState> = {
             Vue.prototype.$socket.sendObj(msg);
         },
 
+        pause(context) {
+            const msg = {
+                topic: 'player',
+                event: 'pause_playback',
+                payload: {},
+                ref: randomString(),
+            };
+            Vue.prototype.$socket.sendObj(msg);
+        },
+
+        play(context) {
+            const msg = {
+                topic: 'player',
+                event: 'play',
+                payload: {},
+                ref: randomString(),
+            };
+            Vue.prototype.$socket.sendObj(msg);
+        },
+
         playPreviousSong(context) {
             const msg = {
                 topic: 'player',
@@ -115,8 +135,12 @@ const store: StoreOptions<RootState> = {
         },
         uiElapsedTime(state) {
             if (state.currentStatus) {
-                const diff = state.now * 1000 - state.currentStatus.timestamp;
-                return state.currentStatus.elapsed + diff / 1000000;
+                if (state.currentStatus.state === 'play') {
+                    const diff = state.now * 1000 - state.currentStatus.timestamp;
+                    return state.currentStatus.elapsed + diff / 1000000;
+                } else {
+                    return state.currentStatus.elapsed;
+                }
             } else {
                 return 0;
             }

@@ -3,8 +3,13 @@
     <v-btn @click="previous()" fab title="previous">
       <v-icon>skip_previous</v-icon>
     </v-btn>
-    <v-btn @click="play()" fab large title="play">
-      <v-icon>play_circle_outline</v-icon>
+    <v-btn v-if="$store.state.currentStatus.state === 'play'" @click="pause()" fab large title="pause">
+      <v-icon>
+        pause_circle_outline</v-icon>
+    </v-btn>
+    <v-btn v-else @click="play()" fab large title="play">
+      <v-icon>
+        play_circle_outline</v-icon>
     </v-btn>
     <v-btn @click="next()" fab title="next">
       <v-icon>skip_next</v-icon>
@@ -33,6 +38,14 @@
             const secondsString = `${prefix(restSeconds)}${String(restSeconds)}`;
 
             return hoursString + minutesString + secondsString;
+        }
+
+        private play() {
+            this.$store.dispatch('play');
+        }
+
+        private pause() {
+            this.$store.dispatch('pause');
         }
 
         private next() {
