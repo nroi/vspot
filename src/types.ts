@@ -12,8 +12,7 @@ export interface RootState {
     };
 }
 
-
-interface PlayerStatus {
+export interface PlayerStatus {
     xfade: number;
     volume: number;
     updating_db: any;
@@ -38,7 +37,7 @@ interface PlayerStatus {
     audio: [ string, string, string ];
 }
 
-interface PlayerSong {
+export interface PlayerSong {
     track: string;
     title: string;
     id: number;
@@ -48,8 +47,6 @@ interface PlayerSong {
     artist: string;
     album: string;
 }
-
-
 
 export interface PhxReply {
     topic: 'player' | 'playlist' | 'database' | 'mixer' | 'misc' | 'search';
@@ -67,7 +64,7 @@ export interface PhxMessage {
     payload: PlaylistMessage | PlayerMessage;
 }
 
-interface PlaylistMessage {
+export interface PlaylistMessage {
     status: PlayerStatus;
     songs: PlayerSong[];
     current_id: number;
