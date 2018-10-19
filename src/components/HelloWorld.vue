@@ -1,8 +1,10 @@
 <template>
   <div>
     <v-slider
+            id='elapsedSlider'
             :max="$store.state.currentSong ? $store.state.currentSong.duration_in_secs : 0"
             :value="$store.getters.uiElapsedTime"
+            @start="sliderStart()"
             @end="sliderEnd()"
     ></v-slider>
   </div>
@@ -13,16 +15,20 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class HelloWorld extends Vue {
+    private created() {
+        console.log('created.');
+        const song = this.$store.state.currentSong;
+    }
 
-  private created() {
-      console.log('created.');
-      const song = this.$store.state.currentSong;
-      console.log('current song:' + JSON.stringify(song));
-  }
+    private sliderStart() {
+        this.$store.state.sliding = true;
+        console.log('sliderStart()');
+    }
 
-  private sliderEnd() {
-      console.log('sliderEnd()');
-  }
+    private sliderEnd() {
+        console.log('sliderEnd()');
+        this.$store.state.sliding = false;
+    }
 }
 
 </script>

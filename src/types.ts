@@ -10,6 +10,8 @@ export interface RootState {
     ui: {
         elapsedTime: number;
     };
+    sliding: boolean;
+    prevSliderValue: number;
 }
 
 export interface PlayerStatus {
@@ -49,10 +51,10 @@ export interface PlayerSong {
 }
 
 export interface PhxMessage {
-    topic: 'player' | 'playlist' | 'database' | 'mixer' | 'misc' | 'search';
+    topic: 'player' | 'playlist' | 'database' | 'mixer' | 'misc' | 'search' | 'status';
     ref: string;
     event: any;
-    payload: PlaylistMessage | PlayerMessage;
+    payload: PlaylistMessage | PlayerMessage | PlayerStatus;
 }
 
 export interface PlaylistMessage {

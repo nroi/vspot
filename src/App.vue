@@ -12,6 +12,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from './components/HelloWorld.vue';
 import SongInfo from './components/SongInfo.vue';
+import {UPDATE_INTERVAL} from './shared';
 
 @Component({
   components: {
@@ -21,8 +22,9 @@ import SongInfo from './components/SongInfo.vue';
 })
 
 export default class App extends Vue {
+
     private created() {
-        setInterval(() => this.$store.commit('updateNow'), 50);
+        setInterval(() => this.$store.commit('updateNow'), UPDATE_INTERVAL);
     }
 }
 </script>

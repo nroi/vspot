@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
-import {PhxMessage, PlayerMessage, PlaylistMessage, PlayerSong, RootState} from './types';
-import {randomString} from './shared';
+import {PhxMessage, PlayerMessage, PlaylistMessage, PlayerSong, RootState, PlayerStatus} from './types';
+import {randomString, UPDATE_INTERVAL} from './shared';
 
 Vue.use(Vuex);
 
@@ -16,6 +16,8 @@ const store: StoreOptions<RootState> = {
         ui: {
             elapsedTime: 0,
         },
+        sliding: false,
+        prevSliderValue: -1,
     },
     mutations: {
         SOCKET_ONOPEN(state, event) {
@@ -32,10 +34,17 @@ const store: StoreOptions<RootState> = {
                 topic: 'playlist',
                 event: 'phx_join',
                 payload: {},
-                ref: '1',
+                ref: '2',
+            };
+            const phxJoinStatusMsg = {
+                topic: 'status',
+                event: 'phx_join',
+                payload: {},
+                ref: '3',
             };
             Vue.prototype.$socket.sendObj(phxJoinPlayerMsg);
             Vue.prototype.$socket.sendObj(phxJoinPlaylistMsg);
+            Vue.prototype.$socket.sendObj(phxJoinStatusMsg);
         },
         SOCKET_ONCLOSE(state, event) {
             state.socket.isConnected = false;
@@ -64,6 +73,9 @@ const store: StoreOptions<RootState> = {
                 const song = playlistMessage.songs.find((p: PlayerSong) => p.id === playlistMessage.current_id);
                 Vue.set(state, 'currentSong', song);
                 console.log('current song: ' + JSON.stringify(song));
+            } else if (message.topic === 'status' && message.event !== 'phx_reply') {
+                const playerStatus: PlayerStatus = message.payload as PlayerStatus;
+                Vue.set(state, 'currentStatus', playerStatus);
             }
         },
         // mutations for reconnect methods
@@ -74,7 +86,20 @@ const store: StoreOptions<RootState> = {
             state.socket.reconnectError = true;
         },
         updateNow(state) {
-            console.log('update now');
+            const diff = Date.now() - state.now;
+            if (diff > UPDATE_INTERVAL * 8) {
+                console.log('Wake up from suspend?');
+                const msg = {
+                    topic: 'status',
+                    event: 'status',
+                    payload: {
+                        module: 'Paracusia.MpdClient.Status',
+                        function: 'status',
+                    },
+                    ref: randomString(),
+                };
+                Vue.prototype.$socket.sendObj(msg);
+            }
             state.now = Date.now();
         },
     },
@@ -134,16 +159,21 @@ const store: StoreOptions<RootState> = {
             }
         },
         uiElapsedTime(state) {
-            if (state.currentStatus) {
+            let newSliderValue = -1;
+            if (state.currentStatus && !state.sliding) {
                 if (state.currentStatus.state === 'play') {
                     const diff = state.now * 1000 - state.currentStatus.timestamp;
-                    return state.currentStatus.elapsed + diff / 1000000;
+                    newSliderValue = state.currentStatus.elapsed + diff / 1000000;
                 } else {
-                    return state.currentStatus.elapsed;
+                    newSliderValue = state.currentStatus.elapsed;
                 }
+            } else if (state.currentStatus && state.sliding) {
+                newSliderValue = state.prevSliderValue;
             } else {
-                return 0;
+                newSliderValue = 0;
             }
+            state.prevSliderValue = newSliderValue;
+            return newSliderValue;
         },
     },
 };
