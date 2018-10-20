@@ -86,6 +86,15 @@ const store: StoreOptions<RootState> = {
         SOCKET_RECONNECT_ERROR(state) {
             state.socket.reconnectError = true;
         },
+        heartbeat(state) {
+            const heartbeatMsg = {
+                topic: 'phoenix',
+                event: 'heartbeat',
+                payload: {},
+                ref: randomString(),
+            };
+            Vue.prototype.$socket.sendObj(heartbeatMsg);
+        },
         updateNow(state) {
             const diff = Date.now() - state.now;
             if (diff > UPDATE_INTERVAL * 8) {
