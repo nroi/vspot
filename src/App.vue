@@ -1,14 +1,13 @@
 <template>
   <div id="app">
     <v-app>
-      <HelloWorld/>
-      <SongInfo v-if="$store.state.currentSong">
-      </SongInfo>
       <ul v-if="$store.state.songs">
         <li v-for="song in $store.state.songs">
           <p>{{song.artist}} {{ song.title }}</p>
         </li>
       </ul>
+      <SongInfo v-if="$store.state.currentSong" />
+      <HelloWorld/>
     </v-app>
   </div>
 </template>

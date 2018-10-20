@@ -1,13 +1,30 @@
 <template>
-  <div>
-    <v-slider
-            id='elapsedSlider'
-            :max="$store.state.currentSong ? $store.state.currentSong.duration_in_secs : 0"
-            :value="$store.getters.uiElapsedTime"
-            @start="sliderStart()"
-            @end="sliderEnd()"
-    ></v-slider>
-  </div>
+  <v-container>
+    <v-layout>
+      <v-flex shrink
+              style="width: 60px"
+              >
+        <v-container>
+          <div>{{ formatHHMMSS($store.getters.uiElapsedTime) }}</div>
+        </v-container>
+      </v-flex>
+      <v-flex>
+        <v-slider
+                id='elapsedSlider'
+                :max="$store.state.currentSong ? $store.state.currentSong.duration_in_secs : 0"
+                :value="$store.getters.uiElapsedTime"
+                @start="sliderStart()"
+                @end="sliderEnd()"
+        ></v-slider>
+      </v-flex>
+      <v-flex shrink
+              style="width: 60px">
+        <v-container>
+          {{ formatHHMMSS($store.getters.currentSongDuration) }}
+        </v-container>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -28,6 +45,21 @@ export default class HelloWorld extends Vue {
     private sliderEnd() {
         console.log('sliderEnd()');
         this.$store.state.sliding = false;
+    }
+
+    private formatHHMMSS(totalSeconds: number) {
+        totalSeconds = Math.trunc(totalSeconds);
+        const totalHours = Math.trunc(totalSeconds / 3600);
+        const restMinutes = Math.trunc((totalSeconds - totalHours * 3600) / 60);
+        const restSeconds = totalSeconds - totalHours * 3600 - restMinutes * 60;
+
+        const prefix = (duration: number) => duration < 10 ? '0' : '';
+
+        const hoursString = totalHours > 0 ? `${prefix(totalHours)}${String(totalHours)}:` : '';
+        const minutesString = `${prefix(restMinutes)}${String(restMinutes)}:`;
+        const secondsString = `${prefix(restSeconds)}${String(restSeconds)}`;
+
+        return hoursString + minutesString + secondsString;
     }
 }
 
