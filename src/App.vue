@@ -4,6 +4,11 @@
       <HelloWorld/>
       <SongInfo v-if="$store.state.currentSong">
       </SongInfo>
+      <ul v-if="$store.state.songs">
+        <li v-for="song in $store.state.songs">
+          <p>{{song.artist}} {{ song.title }}</p>
+        </li>
+      </ul>
     </v-app>
   </div>
 </template>

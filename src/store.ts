@@ -73,6 +73,7 @@ const store: StoreOptions<RootState> = {
                 const song = playlistMessage.songs.find((p: PlayerSong) => p.id === playlistMessage.current_id);
                 Vue.set(state, 'currentSong', song);
                 console.log('current song: ' + JSON.stringify(song));
+                Vue.set(state, 'songs', playlistMessage.songs);
             } else if (message.topic === 'status' && message.event !== 'phx_reply') {
                 const playerStatus: PlayerStatus = message.payload as PlayerStatus;
                 Vue.set(state, 'currentStatus', playerStatus);
