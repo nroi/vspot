@@ -18,6 +18,9 @@ const store: StoreOptions<RootState> = {
         },
         sliding: false,
         prevSliderValue: -1,
+        // true if we want to postpone UI updates until the next message from phoenix backend has been received
+        // and processed.
+        waitForPhoenix: false,
     },
     mutations: {
         SOCKET_ONOPEN(state, event) {
@@ -60,8 +63,8 @@ const store: StoreOptions<RootState> = {
                 console.log(JSON.stringify(message));
                 Vue.set(state, 'currentSong', playerMessage.song);
                 Vue.set(state, 'currentStatus', playerMessage.status);
-                // Vue.set(state.ui, 'elapsedTime', playerMessage.payload.status.elapsed);
-                state.ui.elapsedTime = playerMessage.status.elapsed;
+                Vue.set(state.ui, 'elapsedTime', playerMessage.status.elapsed);
+                // state.ui.elapsedTime = playerMessage.status.elapsed;
                 console.log('Set song and status');
                 // console.log(title);
                 // state.socket.message = message;
@@ -78,6 +81,7 @@ const store: StoreOptions<RootState> = {
                 const playerStatus: PlayerStatus = message.payload as PlayerStatus;
                 Vue.set(state, 'currentStatus', playerStatus);
             }
+            state.waitForPhoenix = false;
         },
         // mutations for reconnect methods
         SOCKET_RECONNECT(state, count) {
@@ -111,7 +115,9 @@ const store: StoreOptions<RootState> = {
                 };
                 Vue.prototype.$socket.sendObj(msg);
             }
-            state.now = Date.now();
+            if (!state.waitForPhoenix) {
+                state.now = Date.now();
+            }
         },
         playId(state, id) {
             const msg = {
@@ -125,6 +131,23 @@ const store: StoreOptions<RootState> = {
                 ref: randomString(),
             };
             Vue.prototype.$socket.sendObj(msg);
+        },
+        seek(state, seconds: number) {
+            state.waitForPhoenix = true;
+            state.sliding = false;
+            if (state.currentSong) {
+                const msg = {
+                    topic: 'status',
+                    event: 'status',
+                    payload: {
+                        module: 'Paracusia.MpdClient.Playback',
+                        function: 'seek_id',
+                        arguments: [state.currentSong.id, seconds],
+                    },
+                    ref: randomString(),
+                };
+                Vue.prototype.$socket.sendObj(msg);
+            }
         },
     },
     actions: {
@@ -183,8 +206,8 @@ const store: StoreOptions<RootState> = {
             }
         },
         uiElapsedTime(state) {
-            let newSliderValue = -1;
-            if (state.currentStatus && !state.sliding) {
+            let newSliderValue = state.prevSliderValue;
+            if (state.currentStatus && !state.sliding && !state.waitForPhoenix) {
                 if (state.currentStatus.state === 'play') {
                     const diff = state.now * 1000 - state.currentStatus.timestamp;
                     newSliderValue = state.currentStatus.elapsed + diff / 1000000;
@@ -193,7 +216,7 @@ const store: StoreOptions<RootState> = {
                 }
             } else if (state.currentStatus && state.sliding) {
                 newSliderValue = state.prevSliderValue;
-            } else {
+            } else if (!state.waitForPhoenix) {
                 newSliderValue = 0;
             }
             state.prevSliderValue = newSliderValue;

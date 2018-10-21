@@ -14,7 +14,7 @@
                 :max="$store.state.currentSong ? $store.state.currentSong.duration_in_secs : 0"
                 :value="$store.getters.uiElapsedTime"
                 @start="sliderStart()"
-                @end="sliderEnd()"
+                @end="sliderEnd($event)"
         ></v-slider>
       </v-flex>
       <v-flex shrink
@@ -42,9 +42,9 @@ export default class HelloWorld extends Vue {
         console.log('sliderStart()');
     }
 
-    private sliderEnd() {
-        console.log('sliderEnd()');
-        this.$store.state.sliding = false;
+    private sliderEnd(seconds: number) {
+        console.log('sliderEnd() at value ' + seconds);
+        this.$store.commit('seek', seconds);
     }
 
     private formatHHMMSS(totalSeconds: number) {

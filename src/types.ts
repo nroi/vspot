@@ -7,6 +7,7 @@ export interface RootState {
     currentSong?: PlayerSong;
     currentStatus?: PlayerStatus;
     now: number;
+    waitForPhoenix: boolean;
     ui: {
         elapsedTime: number;
     };
