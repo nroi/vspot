@@ -16,7 +16,9 @@
     <v-btn @click="next()" icon title="next">
       <v-icon>skip_next</v-icon>
     </v-btn>
-    {{ $store.state.currentSong.artist }} – {{ $store.state.currentSong.title }}
+    <div>
+      {{ $store.state.currentSong.artist || 'Unknown' }} – {{ $store.state.currentSong.title }}
+    </div>
   </div>
 </template>
 
