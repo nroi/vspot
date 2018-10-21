@@ -105,12 +105,26 @@ const store: StoreOptions<RootState> = {
                     payload: {
                         module: 'Paracusia.MpdClient.Status',
                         function: 'status',
+                        arguments: [],
                     },
                     ref: randomString(),
                 };
                 Vue.prototype.$socket.sendObj(msg);
             }
             state.now = Date.now();
+        },
+        playId(state, id) {
+            const msg = {
+                topic: 'status',
+                event: 'status',
+                payload: {
+                    module: 'Paracusia.MpdClient.Playback',
+                    function: 'play_id',
+                    arguments: [id],
+                },
+                ref: randomString(),
+            };
+            Vue.prototype.$socket.sendObj(msg);
         },
     },
     actions: {

@@ -7,7 +7,7 @@
 
       <v-list v-if="$store.state.songs">
         <template v-for="(song, index) in $store.state.songs">
-          <v-list-tile :key="song.id" @click="">
+          <v-list-tile :key="song.id" @click="play(song.id)">
             <v-list-tile-action>
               <v-icon v-if="$store.state.currentSong.id === song.id && $store.state.currentStatus.state === 'play'" color="black">
                 play_circle_outline
@@ -44,6 +44,10 @@ export default class App extends Vue {
     private created() {
         setInterval(() => this.$store.commit('updateNow'), UPDATE_INTERVAL);
         setInterval(() => this.$store.commit('heartbeat'), HEARTBEAT_INTERVAL);
+    }
+
+    private play(id: number) {
+        this.$store.commit('playId', id);
     }
 }
 </script>
