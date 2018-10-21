@@ -13,6 +13,7 @@ export interface RootState {
     };
     sliding: boolean;
     prevSliderValue: number;
+    filterInput: string;
 }
 
 export interface PlayerStatus {

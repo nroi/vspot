@@ -21,6 +21,7 @@ const store: StoreOptions<RootState> = {
         // true if we want to postpone UI updates until the next message from phoenix backend has been received
         // and processed.
         waitForPhoenix: false,
+        filterInput: '',
     },
     mutations: {
         SOCKET_ONOPEN(state, event) {
