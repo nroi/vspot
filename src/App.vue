@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <v-app>
-
       <v-text-field
               v-model="$store.state.filterInput"
               prepend-icon="search"

@@ -102,7 +102,7 @@ const store: StoreOptions<RootState> = {
         },
         updateNow(state) {
             const diff = Date.now() - state.now;
-            if (diff > UPDATE_INTERVAL * 20) {
+            if (diff > UPDATE_INTERVAL * 100) {
                 console.log('Wake up from suspend?');
                 const msg = {
                     topic: 'status',
