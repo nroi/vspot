@@ -23,6 +23,10 @@
           {{ $store.getters.currentSongDuration | formatHHMMSS }}
         </v-container>
       </v-flex>
+      <v-slider
+              v-model="volume"
+              prepend-icon="volume_down"
+      ></v-slider>
     </v-layout>
   </v-container>
 </template>
