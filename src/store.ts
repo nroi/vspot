@@ -22,6 +22,7 @@ const store: StoreOptions<RootState> = {
         // and processed.
         waitForPhoenix: false,
         filterInput: '',
+        volume: 0,
     },
     mutations: {
         SOCKET_ONOPEN(state, event) {

@@ -15,6 +15,7 @@
                 :value="$store.getters.uiElapsedTime"
                 @start="sliderStart()"
                 @end="sliderEnd($event)"
+                @change="sliderChange($event)"
         ></v-slider>
       </v-flex>
       <v-flex shrink
@@ -24,7 +25,7 @@
         </v-container>
       </v-flex>
       <v-slider
-              v-model="volume"
+              v-model="$store.state.volume"
               prepend-icon="volume_down"
       ></v-slider>
     </v-layout>
@@ -63,6 +64,11 @@ export default class HelloWorld extends Vue {
 
     private sliderEnd(seconds: number) {
         console.log('sliderEnd() at value ' + seconds);
+        this.$store.commit('seek', seconds);
+    }
+
+    private sliderChange(seconds: number) {
+        console.log('sliderChange() at value ' + seconds);
         this.$store.commit('seek', seconds);
     }
 }
