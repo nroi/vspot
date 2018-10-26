@@ -12,7 +12,7 @@ export interface RootState {
         elapsedTime: number;
     };
     sliding: boolean;
-    prevSliderValue: number;
+    prevElapsedSliderValue: number;
     filterInput: string;
 }
 

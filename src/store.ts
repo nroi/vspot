@@ -17,7 +17,7 @@ const store: StoreOptions<RootState> = {
             elapsedTime: 0,
         },
         sliding: false,
-        prevSliderValue: -1,
+        prevElapsedSliderValue: -1,
         // true if we want to postpone UI updates until the next message from phoenix backend has been received
         // and processed.
         waitForPhoenix: false,
@@ -207,21 +207,21 @@ const store: StoreOptions<RootState> = {
             }
         },
         uiElapsedTime(state) {
-            let newSliderValue = state.prevSliderValue;
+            let newElapsedSliderValue = state.prevElapsedSliderValue;
             if (state.currentStatus && !state.sliding && !state.waitForPhoenix) {
                 if (state.currentStatus.state === 'play') {
                     const diff = state.now * 1000 - state.currentStatus.timestamp;
-                    newSliderValue = state.currentStatus.elapsed + diff / 1000000;
+                    newElapsedSliderValue = state.currentStatus.elapsed + diff / 1000000;
                 } else {
-                    newSliderValue = state.currentStatus.elapsed;
+                    newElapsedSliderValue = state.currentStatus.elapsed;
                 }
             } else if (state.currentStatus && state.sliding) {
-                newSliderValue = state.prevSliderValue;
+                newElapsedSliderValue = state.prevElapsedSliderValue;
             } else if (!state.waitForPhoenix) {
-                newSliderValue = 0;
+                newElapsedSliderValue = 0;
             }
-            state.prevSliderValue = newSliderValue;
-            return newSliderValue;
+            state.prevElapsedSliderValue = newElapsedSliderValue;
+            return newElapsedSliderValue;
         },
         uiVolume(state) {
             return state.currentStatus ? state.currentStatus.volume : 0;
