@@ -14,7 +14,6 @@ export interface RootState {
     sliding: boolean;
     prevSliderValue: number;
     filterInput: string;
-    volume: number;
 }
 
 export interface PlayerStatus {

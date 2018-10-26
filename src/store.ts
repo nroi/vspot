@@ -22,7 +22,6 @@ const store: StoreOptions<RootState> = {
         // and processed.
         waitForPhoenix: false,
         filterInput: '',
-        volume: 0,
     },
     mutations: {
         SOCKET_ONOPEN(state, event) {
@@ -223,6 +222,9 @@ const store: StoreOptions<RootState> = {
             }
             state.prevSliderValue = newSliderValue;
             return newSliderValue;
+        },
+        uiVolume(state) {
+            return state.currentStatus ? state.currentStatus.volume : 0;
         },
     },
 };

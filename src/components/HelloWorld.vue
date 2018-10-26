@@ -25,7 +25,7 @@
         </v-container>
       </v-flex>
       <v-slider
-              v-model="$store.state.volume"
+              :value="$store.getters.uiVolume"
               prepend-icon="volume_down"
       ></v-slider>
     </v-layout>
