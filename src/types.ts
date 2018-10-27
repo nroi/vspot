@@ -47,7 +47,6 @@ export interface PlayerSong {
     id: number;
     file: string;
     duration_in_secs: number;
-    duration: string;
     artist: string;
     album: string;
 }
