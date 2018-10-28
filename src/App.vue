@@ -1,10 +1,13 @@
 <template>
+  <!--TODO maybe put the search box into a toolbar? https://vuetifyjs.com/en/examples/layouts/googleYoutube-->
+  <!--TODO check out this example: https://github.com/vuetifyjs/docs/blob/master/examples/layouts/complex.vue-->
+  <!--https://vuetifyjs.com/en/examples/layouts/complex-->
   <div id="app">
     <v-app>
       <v-navigation-drawer
-              enable-resize-watcher app
-              permanent
-              absolute
+              fixed
+              clipped
+              app
       >
         <v-toolbar flat class="transparent">
           <v-list class="pa-0">
@@ -51,6 +54,17 @@
 
         </v-list>
       </v-navigation-drawer>
+      <v-toolbar
+              color="blue-grey"
+              dark
+              fixed
+              app
+              clipped-right
+      >
+        <v-toolbar-title>vspot</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <p>add search box here.</p>
+      </v-toolbar>
       <v-content>
         <v-container fluid>
           <v-text-field
@@ -68,6 +82,13 @@
           <SongInfo v-if="$store.state.currentSong" />
         </v-container>
       </v-content>
+      <v-footer height="85" color="blue-grey" class="white--text" app>
+        useless text. place the current song and the seekbar in here.
+        <br>
+        even more useless text.
+        <br>
+        even more useless text.
+      </v-footer>
     </v-app>
   </div>
 </template>
