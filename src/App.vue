@@ -15,7 +15,6 @@
         <Queue></Queue>
 
         <SongInfo v-if="$store.state.currentSong" />
-        <HelloWorld/>
       </v-content>
     </v-app>
   </div>
@@ -23,14 +22,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
 import SongInfo from './components/SongInfo.vue';
 import Queue from './components/Queue.vue';
 import {HEARTBEAT_INTERVAL, UPDATE_INTERVAL} from './shared';
 
 @Component({
   components: {
-    HelloWorld,
     SongInfo,
     Queue,
   },
