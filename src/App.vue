@@ -28,18 +28,29 @@
           <v-divider></v-divider>
 
           <v-list-tile
-                  v-for="item in items"
-                  :key="item.title"
-                  @click=""
+                  @click="$router.push('queue')"
           >
             <v-list-tile-action>
-              <v-icon>{{ item.icon }}</v-icon>
+              <v-icon>queue_music</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+              <v-list-tile-title>Queue</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
+
+          <v-list-tile
+                  @click="$router.push('database')"
+          >
+            <v-list-tile-action>
+              <v-icon>library_books</v-icon>
+            </v-list-tile-action>
+
+            <v-list-tile-content>
+              <v-list-tile-title>Database</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
         </v-list>
       </v-navigation-drawer>
       <v-content>
