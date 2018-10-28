@@ -82,8 +82,6 @@ export default class App extends Vue {
         { title: 'About', icon: 'question_answer' },
     ];
 
-    private right = null;
-
     private created() {
         setInterval(() => this.$store.commit('updateNow'), UPDATE_INTERVAL);
         setInterval(() => this.$store.commit('heartbeat'), HEARTBEAT_INTERVAL);
