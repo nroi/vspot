@@ -55,10 +55,11 @@
 </template>
 
 <script lang="ts">
-    import { Component, Vue } from 'vue-property-decorator';
+    import {Component, Prop, Vue} from 'vue-property-decorator';
 
     @Component
     export default class SongInfo extends Vue {
+        @Prop() public name!: string;
 
         private play() {
             this.$store.dispatch('play');
