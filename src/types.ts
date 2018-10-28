@@ -11,7 +11,8 @@ export interface RootState {
     ui: {
         elapsedTime: number;
     };
-    sliding: boolean;
+    elapsedSliding: boolean;
+    volumeSliding: boolean;
     prevElapsedSliderValue: number;
     filterInput: string;
 }

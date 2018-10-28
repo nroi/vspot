@@ -16,7 +16,8 @@ const store: StoreOptions<RootState> = {
         ui: {
             elapsedTime: 0,
         },
-        sliding: false,
+        elapsedSliding: false,
+        volumeSliding: false,
         prevElapsedSliderValue: -1,
         // true if we want to postpone UI updates until the next message from phoenix backend has been received
         // and processed.
@@ -135,7 +136,7 @@ const store: StoreOptions<RootState> = {
         },
         seek(state, seconds: number) {
             state.waitForPhoenix = true;
-            state.sliding = false;
+            state.elapsedSliding = false;
             if (state.currentSong) {
                 const msg = {
                     topic: 'status',
@@ -144,6 +145,23 @@ const store: StoreOptions<RootState> = {
                         module: 'Paracusia.MpdClient.Playback',
                         function: 'seek_id',
                         arguments: [state.currentSong.id, seconds],
+                    },
+                    ref: randomString(),
+                };
+                Vue.prototype.$socket.sendObj(msg);
+            }
+        },
+        setVolume(state, percent: number) {
+            state.waitForPhoenix = true;
+            state.volumeSliding = false;
+            if (state.currentSong) {
+                const msg = {
+                    topic: 'status',
+                    event: 'status',
+                    payload: {
+                        module: 'Paracusia.MpdClient.Playback',
+                        function: 'set_volume',
+                        arguments: [percent],
                     },
                     ref: randomString(),
                 };
@@ -208,14 +226,14 @@ const store: StoreOptions<RootState> = {
         },
         uiElapsedTime(state) {
             let newElapsedSliderValue = state.prevElapsedSliderValue;
-            if (state.currentStatus && !state.sliding && !state.waitForPhoenix) {
+            if (state.currentStatus && !state.elapsedSliding && !state.waitForPhoenix) {
                 if (state.currentStatus.state === 'play') {
                     const diff = state.now * 1000 - state.currentStatus.timestamp;
                     newElapsedSliderValue = state.currentStatus.elapsed + diff / 1000000;
                 } else {
                     newElapsedSliderValue = state.currentStatus.elapsed;
                 }
-            } else if (state.currentStatus && state.sliding) {
+            } else if (state.currentStatus && state.elapsedSliding) {
                 newElapsedSliderValue = state.prevElapsedSliderValue;
             } else if (!state.waitForPhoenix) {
                 newElapsedSliderValue = 0;

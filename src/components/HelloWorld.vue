@@ -27,6 +27,9 @@
       <v-slider
               :value="$store.getters.uiVolume"
               prepend-icon="volume_down"
+              @start="volumeSliderStart()"
+              @end="volumeSliderEnd($event)"
+              @change="volumeSliderChange($event)"
       ></v-slider>
     </v-layout>
   </v-container>
@@ -43,7 +46,7 @@ export default class HelloWorld extends Vue {
     }
 
     private elapsedSliderStart() {
-        this.$store.state.sliding = true;
+        this.$store.state.elapsedSliding = true;
         console.log('sliderStart()');
     }
 
@@ -55,6 +58,21 @@ export default class HelloWorld extends Vue {
     private elapsedSliderChange(seconds: number) {
         console.log('sliderChange() at value ' + seconds);
         this.$store.commit('seek', seconds);
+    }
+
+    private volumeSliderStart() {
+        this.$store.state.volumeSliding = true;
+        console.log('sliderStart()');
+    }
+
+    private volumeSliderEnd(percent: number) {
+        console.log('sliderEnd() at value ' + percent);
+        this.$store.commit('setVolume', percent);
+    }
+
+    private volumeSliderChange(percent: number) {
+        console.log('sliderChange() at value ' + percent);
+        this.$store.commit('setVolume', percent);
     }
 }
 
