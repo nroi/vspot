@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
 import Queue from './components/Queue.vue';
+import Database from './components/Database.vue';
 import store from './store';
 import VueNativeSock from 'vue-native-websocket';
 import Vuetify from 'vuetify';
@@ -41,6 +42,7 @@ Vue.filter('formatHHMMSS', (totalSeconds: number) => {
 const routes = [
     { path: '', component: Queue },
     { path: '/queue', component: Queue },
+    { path: '/database', component: Database },
 ];
 
 const router = new VueRouter({

@@ -2,8 +2,6 @@
   <div id="app">
     <v-app>
       <v-navigation-drawer
-              v-model="drawer"
-              :clipped="clipped"
               enable-resize-watcher app
               permanent
               absolute
@@ -78,12 +76,14 @@
 import { Component, Vue } from 'vue-property-decorator';
 import SongInfo from './components/SongInfo.vue';
 import Queue from './components/Queue.vue';
+import Database from './components/Database.vue';
 import {HEARTBEAT_INTERVAL, UPDATE_INTERVAL} from './shared';
 
 @Component({
   components: {
     SongInfo,
     Queue,
+    Database,
   },
 })
 export default class App extends Vue {
