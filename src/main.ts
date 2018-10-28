@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import App from './App.vue';
+import Queue from './components/Queue.vue';
 import store from './store';
 import VueNativeSock from 'vue-native-websocket';
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import VueRouter from 'vue-router';
 
 Vue.config.productionTip = false;
 
@@ -21,6 +23,8 @@ Vue.use(Vuetify, {
     iconfont: 'mdi',
 });
 
+Vue.use(VueRouter);
+
 Vue.filter('formatHHMMSS', (totalSeconds: number) => {
     totalSeconds = Math.trunc(totalSeconds);
     const totalHours = Math.trunc(totalSeconds / 3600);
@@ -34,7 +38,17 @@ Vue.filter('formatHHMMSS', (totalSeconds: number) => {
     return hoursString + minutesString + secondsString;
 });
 
+const routes = [
+    { path: '', component: Queue },
+    { path: '/queue', component: Queue },
+];
+
+const router = new VueRouter({
+    routes,
+});
+
 new Vue({
-  store,
-  render: (h) => h(App),
+    store,
+    router,
+    render: (h) => h(App),
 }).$mount('#app');

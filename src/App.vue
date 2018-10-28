@@ -54,7 +54,7 @@
                   type="text"
           ></v-text-field>
 
-          <Queue></Queue>
+          <router-view></router-view>
 
           <SongInfo v-if="$store.state.currentSong" />
         </v-container>

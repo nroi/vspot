@@ -12,6 +12,7 @@
     "vue-class-component": "^6.0.0",
     "vue-native-websocket": "^2.0.12",
     "vue-property-decorator": "^7.0.0",
+    "vue-router": "^3.0.1",
     "vuetify": "^1.2.9",
     "vuex": "^3.0.1"
   },
