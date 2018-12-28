@@ -9,7 +9,9 @@
     <template slot="items" slot-scope="props">
       <tr @click="play(props.item.id)">
         <td>
-          <v-icon v-if="$store.state.currentSong.id === props.item.id && $store.state.currentStatus.state === 'play'" color="black">
+          <v-icon v-if="$store.state.currentSong &&
+          $store.state.currentSong.id === props.item.id &&
+          $store.state.currentStatus.state === 'play'" color="black">
             play_circle_outline
           </v-icon>
         </td>
