@@ -52,6 +52,22 @@ export interface PlayerSong {
     album: string;
 }
 
+export interface DatabasePlayerSong {
+    duration: string;
+    file: string;
+    Title?: string;
+    Artist?: string;
+    Album?: string;
+    AlbumArtist?: string;
+    Track?: string;
+}
+
+export interface DatabaseDirectory {
+    directory: string;
+}
+
+export type DatabaseEntry = DatabasePlayerSong | DatabaseDirectory;
+
 export interface PhxMessage {
     topic: 'player' | 'playlist' | 'database' | 'mixer' | 'misc' | 'search' | 'status';
     ref: string;
