@@ -1,5 +1,8 @@
 <template>
   <div>
+
+    <status-snackbar></status-snackbar>
+
     <v-card>
       <v-list two-line subheader>
         <v-subheader inset>Listing files and directories from {{ currentPath }}</v-subheader>
@@ -45,8 +48,10 @@
 <script lang='ts'>
     import {Component, Prop, Vue} from 'vue-property-decorator';
     import {DatabaseEntry, DatabasePlayerSong} from '@/types';
-
-    @Component
+    import StatusSnackbar from '@/views/StatusSnackbar.vue';
+    @Component({
+        components: {StatusSnackbar}
+    })
     export default class Database extends Vue {
         @Prop() public name!: string;
 
@@ -81,7 +86,11 @@
         }
 
         private addToQueue(song: DatabasePlayerSong) {
-            this.$store.dispatch('addToQueue', song.file);
+            this.$store.dispatch('addToQueue', song.file).then(() => {
+                this.$store.dispatch('setSnackbarText', 'Song added to queue');
+                this.$store.dispatch('showSnackbar');
+                this.$store.dispatch('setSnackbarStatus', 'success');
+            });
         }
 
         private traverseToDirectory(directory: string) {

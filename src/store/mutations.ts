@@ -162,3 +162,15 @@ export const setVolume = (state: RootState, percent: number) => {
         Vue.prototype.$socket.sendObj(msg);
     }
 };
+
+export const setSnackbarText = (state: RootState, text: string) => {
+    state.snackbar.text = text;
+};
+
+export const setSnackbarStatus = (state: RootState, status: 'success' | 'error') => {
+    state.snackbar.status = status;
+};
+
+export const showSnackbar = (state: RootState) => {
+    state.snackbar.visible = true;
+};

@@ -15,6 +15,13 @@ export interface RootState {
     volumeSliding: boolean;
     prevElapsedSliderValue: number;
     filterInput: string;
+    snackbar: {
+        visible: boolean,
+        text: string,
+        timeout: number,
+        multiline: boolean,
+        status: 'success' | 'error';
+    };
 }
 
 export interface PlayerStatus {

@@ -25,6 +25,13 @@ const store: StoreOptions<RootState> = {
         // and processed.
         waitForPhoenix: false,
         filterInput: '',
+        snackbar: {
+            visible: false,
+            text: '',
+            timeout: 4000,
+            multiline: false,
+            status: 'success',
+        },
     },
     mutations,
     actions,

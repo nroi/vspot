@@ -60,3 +60,16 @@ export const addToQueue = (context: Context, uri: string) => {
     };
     Vue.prototype.$socket.sendObj(msg);
 };
+
+export const setSnackbarText = (context: Context, text: string) => {
+    context.commit('setSnackbarText', text);
+};
+
+export const setSnackbarStatus = (context: Context, status: 'success' | 'error') => {
+    context.commit('setSnackbarStatus', status);
+};
+
+export const showSnackbar = (context: Context) => {
+    context.commit('showSnackbar');
+};
+
