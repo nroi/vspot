@@ -50,7 +50,9 @@
     import {DatabaseEntry, DatabasePlayerSong} from '@/types';
     import StatusSnackbar from '@/views/StatusSnackbar.vue';
     @Component({
-        components: {StatusSnackbar}
+        components: {
+            StatusSnackbar,
+        },
     })
     export default class Database extends Vue {
         @Prop() public name!: string;
