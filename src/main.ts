@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import Queue from './components/Queue.vue';
 import Database from './components/Database.vue';
-import store from './store';
+import store from './store/store';
 import VueNativeSock from 'vue-native-websocket';
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
@@ -46,6 +46,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
+    mode: 'history',
     routes,
 });
 
