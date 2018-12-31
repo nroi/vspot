@@ -2,13 +2,13 @@
   <div>
     <v-card>
       <v-list two-line subheader>
-        <v-subheader inset>Listing files and directories from /</v-subheader>
+        <v-subheader inset>Listing files and directories from {{ currentPath }}</v-subheader>
 
         <v-list-tile
                 v-for="dbEntry in dbEntries"
                 :key="dbEntry.file || dbEntry.directory"
                 avatar
-                @click=""
+                @click="dbEntry.file ? addToQueue(dbEntry) : traverseToDirectory(dbEntry.directory)"
         >
           <v-list-tile-avatar>
             <v-icon>
@@ -42,9 +42,9 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang='ts'>
     import {Component, Prop, Vue} from 'vue-property-decorator';
-    import {DatabaseEntry} from '@/types';
+    import {DatabaseEntry, DatabasePlayerSong} from '@/types';
 
     @Component
     export default class Database extends Vue {
@@ -53,15 +53,23 @@
 
         private dbEntries: DatabaseEntry[] = [];
 
+        private currentPath: string = '/';
+
         private created() {
-            this.getDatabaseFromPath('').then((response: DatabaseEntry[]) => {
+            return this.initializeFromPath('');
+        }
+
+        private initializeFromPath(path: string) {
+            this.currentPath = '/' + path;
+            this.getDatabaseFromPath(path).then((response: DatabaseEntry[]) => {
                 this.dbEntries = response;
             });
         }
 
-        private getDatabaseFromPath(path: string) {
+        private getDatabaseFromPath(path: string): Promise<DatabaseEntry[]> {
             const url = `http://localhost:8080/api/database/${path}`;
-            return new Promise( (resolve, reject) => {
+            // noinspection TypeScriptValidateTypes
+            return new Promise<DatabaseEntry[]>( (resolve, reject) => {
                 fetch(url).then((response) => {
                     if (response.ok) {
                         resolve(response.json());
@@ -70,6 +78,14 @@
                     }
                 });
             });
+        }
+
+        private addToQueue(song: DatabasePlayerSong) {
+            this.$store.dispatch('addToQueue', song.file);
+        }
+
+        private traverseToDirectory(directory: string) {
+            this.initializeFromPath(directory);
         }
 
     }

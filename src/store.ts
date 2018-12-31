@@ -47,9 +47,16 @@ const store: StoreOptions<RootState> = {
                 payload: {},
                 ref: '3',
             };
+            const phxJoinDatabaseMsg = {
+                topic: 'database',
+                event: 'phx_join',
+                payload: {},
+                ref: '4',
+            };
             Vue.prototype.$socket.sendObj(phxJoinPlayerMsg);
             Vue.prototype.$socket.sendObj(phxJoinPlaylistMsg);
             Vue.prototype.$socket.sendObj(phxJoinStatusMsg);
+            Vue.prototype.$socket.sendObj(phxJoinDatabaseMsg);
         },
         SOCKET_ONCLOSE(state, event) {
             state.socket.isConnected = false;
@@ -209,6 +216,18 @@ const store: StoreOptions<RootState> = {
                 topic: 'player',
                 event: 'play_previous_song',
                 payload: {},
+                ref: randomString(),
+            };
+            Vue.prototype.$socket.sendObj(msg);
+        },
+
+        addToQueue(context, uri: string) {
+            const msg = {
+                topic: 'database',
+                event: 'add_uri',
+                payload: {
+                    uri,
+                },
                 ref: randomString(),
             };
             Vue.prototype.$socket.sendObj(msg);
