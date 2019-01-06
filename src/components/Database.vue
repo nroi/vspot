@@ -15,7 +15,7 @@
         >
           <v-list-tile-avatar>
             <v-icon>
-              <template v-if="dbEntry.file">
+              <template v-if="dbEntry.type === 'DatabasePlayerSong'">
                 music_video
               </template>
               <template v-else>
@@ -42,13 +42,32 @@
         </v-list-tile>
       </v-list>
     </v-card>
+
+    <v-treeview
+            v-model="tree"
+            :open="open"
+            :items="dbEntries"
+            activatable
+            :item-key="name"
+            open-on-click
+    >
+      <template slot="prepend" slot-scope="{ item, open, leaf }">
+        <v-icon v-if="item.type === 'DatabasePlayerSong'">
+          mdi-music-circle
+        </v-icon>
+        <v-icon v-else>
+          {{ open ? 'folder' : 'folder_open' }}
+        </v-icon>
+      </template>
+    </v-treeview>
+
   </div>
 </template>
 
 <script lang='ts'>
     import {Component, Prop, Vue} from 'vue-property-decorator';
-    import {DatabaseEntry, DatabasePlayerSong} from '@/types';
     import StatusSnackbar from '@/views/StatusSnackbar.vue';
+    import {DatabaseDirectory, DatabaseEntry, DatabasePlayerSong} from '@/types';
     @Component({
         components: {
             StatusSnackbar,
@@ -57,10 +76,13 @@
     export default class Database extends Vue {
         @Prop() public name!: string;
 
-
         private dbEntries: DatabaseEntry[] = [];
 
         private currentPath: string = '/';
+
+        private open = [];
+
+        private tree = [];
 
         private created() {
             return this.initializeFromPath('');
@@ -69,7 +91,15 @@
         private initializeFromPath(path: string) {
             this.currentPath = '/' + path;
             this.getDatabaseFromPath(path).then((response: DatabaseEntry[]) => {
+                this.dbEntries = [];
+                for (const entry of response) {
+                    entry.name = this.dbEntryToName(entry);
+                }
                 this.dbEntries = response;
+                console.log('dbentries: ' + JSON.stringify(this.dbEntries));
+                for (const entry of this.dbEntries) {
+                    entry.name = this.dbEntryToName(entry);
+                }
             });
         }
 
@@ -99,6 +129,13 @@
             this.initializeFromPath(directory);
         }
 
+        private dbEntryToName(dbEntry: DatabaseEntry): string {
+            if (dbEntry.type === 'DatabasePlayerSong') {
+                return dbEntry.file;
+            } else {
+                return dbEntry.directory;
+            }
+        }
     }
 </script>
 

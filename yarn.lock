@@ -637,6 +637,11 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
+"@mdi/font@^3.3.92":
+  version "3.3.92"
+  resolved "https://registry.yarnpkg.com/@mdi/font/-/font-3.3.92.tgz#9434b92f9810e41d34dd7936e8e1578cd46bebfd"
+  integrity sha512-Ux6iPfRjT9gHtejfss7aHBjgedLx8OrnX7Q+DuqgGYVkr9Amhi7cWFd745znrj7Y74pnjrs+uAbpohPK3ue5Ew==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -7034,6 +7039,11 @@ vue-loader@^15.4.2:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-material-design-icons@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/vue-material-design-icons/-/vue-material-design-icons-2.6.0.tgz#44de179ea85a31424cea1b1da5415f79cfce2743"
+  integrity sha512-ueylNTZJk9jXGFSlSZ6iVIaw+r/uTMJDerG2X3ZAMz4yK7O/BAS1I/THVLA+mINyb4I7SPHmBt/msSYcdKSv0A==
 
 vue-native-websocket@^2.0.12:
   version "2.0.12"

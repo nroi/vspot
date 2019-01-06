@@ -1,28 +1,29 @@
 <template>
-  <v-data-table v-if="$store.state.songs"
-                :headers="queueHeaders"
-                :items="$store.state.songs"
-                :search="$store.state.filterInput"
-                hide-actions
-                class="elevation-1"
-  >
-    <template slot="items" slot-scope="props">
-      <tr @click="play(props.item.id)">
-        <td>
-          <v-icon v-if="$store.state.currentSong &&
+  <div id="queue">
+    <v-data-table v-if="$store.state.songs"
+                  :headers="queueHeaders"
+                  :items="$store.state.songs"
+                  :search="$store.state.filterInput"
+                  hide-actions
+                  class="elevation-1"
+    >
+      <template slot="items" slot-scope="props">
+        <tr @click="play(props.item.id)">
+          <td>
+            <v-icon v-if="$store.state.currentSong &&
           $store.state.currentSong.id === props.item.id &&
           $store.state.currentStatus.state === 'play'" color="black">
-            play_circle_outline
-          </v-icon>
-        </td>
-        <td class="text-xs-left">{{ props.item.title }}</td>
-        <td class="text-xs-left">{{ props.item.artist }}</td>
-        <td class="text-xs-left">{{ props.item.album }}</td>
-        <td class="text-xs-left">{{ props.item.duration_in_secs | formatHHMMSS }}</td>
-      </tr>
-    </template>
-  </v-data-table>
-
+              play_circle_outline
+            </v-icon>
+          </td>
+          <td class="text-xs-left">{{ props.item.title }}</td>
+          <td class="text-xs-left">{{ props.item.artist }}</td>
+          <td class="text-xs-left">{{ props.item.album }}</td>
+          <td class="text-xs-left">{{ props.item.duration_in_secs | formatHHMMSS }}</td>
+        </tr>
+      </template>
+    </v-data-table>
+  </div>
 </template>
 
 <script lang="ts">
@@ -48,5 +49,4 @@
 </script>
 
 <style scoped>
-
 </style>

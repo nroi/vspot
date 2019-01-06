@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="song-info">
     <v-btn @click="previous()" icon title="previous">
       <v-icon>skip_previous</v-icon>
     </v-btn>
@@ -123,5 +123,8 @@
   }
   a {
     color: #42b983;
+  }
+  #song-info {
+    text-align: center;
   }
 </style>

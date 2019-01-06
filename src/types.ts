@@ -60,6 +60,7 @@ export interface PlayerSong {
 }
 
 export interface DatabasePlayerSong {
+    type: 'DatabasePlayerSong';
     duration: string;
     file: string;
     Title?: string;
@@ -67,10 +68,13 @@ export interface DatabasePlayerSong {
     Album?: string;
     AlbumArtist?: string;
     Track?: string;
+    name: string;
 }
 
 export interface DatabaseDirectory {
+    type: 'DatabaseDirectory';
     directory: string;
+    name: string;
 }
 
 export type DatabaseEntry = DatabasePlayerSong | DatabaseDirectory;
